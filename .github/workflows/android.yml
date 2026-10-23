@@ -16,8 +16,10 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Install pinned Android toolchain
-        run: sdkmanager 'platforms;android-36' 'ndk;30.0.15729638' 'cmake;4.1.2'
+      - uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3
+        with:
+          packages: 'platform-tools platforms;android-36 ndk;30.0.15729638 cmake;4.1.2'
+          log-accepted-android-sdk-licenses: false
       - name: Test, lint and build
         run: ./gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --max-workers=2
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

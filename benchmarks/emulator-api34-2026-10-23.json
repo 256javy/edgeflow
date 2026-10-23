@@ -1,0 +1,18 @@
+{
+  "device": "Android emulator API 34 x86_64, Pixel 6 profile, 3 GB RAM",
+  "physical_xiaomi_tested": false,
+  "runtime": "whisper.cpp v1.8.7 CPU, at most 4 threads",
+  "airplane_mode": true,
+  "audio": {
+    "kind": "synthetic Spanish espeak-ng 1.51, not human benchmark",
+    "samples": 83308,
+    "sample_rate": 16000,
+    "sha256": "105714d6fa8cc746996e25b0e4f91a0a2f23252dc068e3c09606b4f042ba64ab",
+    "reference": "Hola. Esta es una prueba de dictado local. Vamos a revisar el texto antes de enviar."
+  },
+  "measurements": [
+    {"model": "tiny", "cold_ms": 3453, "warm_ms": 2786, "wer": 0.4375, "cer": 0.2839506172839506, "output": "Esta es una prueba mecata local, vamos a remitar el texto a este señor."},
+    {"model": "base", "cold_ms": 7186, "warm_ms": 5970, "wer": 0.25, "cer": 0.1728395061728395, "output": "Esta es una prueba nemícta local, vamos a verisare el texto antes de enviar."}
+  ],
+  "quality_accepted": false
+}

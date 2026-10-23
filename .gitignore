@@ -1,0 +1,13 @@
+/.gradle/
+/.kotlin/
+/local.properties
+**/build/
+**/.cxx/
+*.bin
+*.wav
+*.pcm
+*.jks
+*.keystore
+
+/dist/
+**/__pycache__/

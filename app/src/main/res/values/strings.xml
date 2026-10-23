@@ -1,0 +1,1 @@
+<resources><string name="accessibility_description">EdgeFlow identifica únicamente el campo editable enfocado para mostrar la burbuja e insertar tu dictado. Lee el texto de ese campo solo al insertar para conservarlo. No envía mensajes, no guarda formularios y no accede a contraseñas. Puedes revocar este acceso en Ajustes.</string></resources>

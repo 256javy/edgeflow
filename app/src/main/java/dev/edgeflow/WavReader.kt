@@ -3,10 +3,10 @@ package dev.edgeflow
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
-/** Deliberately narrow input contract, matching the microphone: PCM16 mono, 16 kHz, <=60s. */
+/** Deliberately narrow input contract, matching the microphone: PCM16 mono, 16 kHz, <=180s. */
 object WavReader {
     fun read(bytes: ByteArray): FloatArray {
-        require(bytes.size in 44..4_000_000) { "WAV demasiado grande o incompleto" }
+        require(bytes.size in 44..8_000_000) { "WAV demasiado grande o incompleto" }
         fun text(offset: Int, size: Int) = String(bytes, offset, size, Charsets.US_ASCII)
         fun integer(offset: Int) = ByteBuffer.wrap(bytes, offset, 4).order(ByteOrder.LITTLE_ENDIAN).int
         fun short(offset: Int) = ByteBuffer.wrap(bytes, offset, 2).order(ByteOrder.LITTLE_ENDIAN).short.toInt() and 0xffff
@@ -28,7 +28,7 @@ object WavReader {
             if (type == "data") { require(dataOffset == -1) { "Múltiples bloques de audio no admitidos" }; dataOffset = start; dataSize = size }
             offset = start + size + (size and 1)
         }
-        require(formatValid && dataOffset >= 0 && dataSize in 16000..1_920_000 && dataSize % 2 == 0) { "Audio de 0,5 a 60 segundos requerido" }
+        require(formatValid && dataOffset >= 0 && dataSize in 16000..5_760_000 && dataSize % 2 == 0) { "Audio de 0,5 a 180 segundos requerido" }
         return FloatArray(dataSize / 2) { short(dataOffset + it * 2).toShort() / 32768f }
     }
 }

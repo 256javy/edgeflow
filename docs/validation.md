@@ -1,4 +1,6 @@
-# Validación de la v0 — 23 de octubre de 2026
+# Validación histórica de la v0.1 — 23 de octubre de 2026
+
+Para la iteración con Gemma y las pruebas físicas, consulta [v0.2](validation-v0.2.md).
 
 ## Entorno y alcance
 

@@ -29,9 +29,9 @@ class ModelDownloads(private val context: Context, private val store: ModelStore
             require(free > model.bytes * 2 + 32L * 1024 * 1024) { "Espacio insuficiente para original y copia privada" }
             val request = DownloadManager.Request(Uri.parse(model.url))
                 .setTitle("EdgeFlow · ${model.label}")
-                .setDescription("Modelo ASR local. Se conservará en Descargas/EdgeFlow.")
+                .setDescription("Modelo local. Se conservará en Descargas/EdgeFlow.")
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "EdgeFlow/ggml-${model.id}.bin")
+                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "EdgeFlow/${model.filename}")
                 .setAllowedOverMetered(false)
             val id = manager.enqueue(request)
             prefs.edit().putLong("id", id).putString("model", model.id).apply()

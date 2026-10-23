@@ -21,3 +21,13 @@ Todavía no hay un canal público de contacto configurado.
 
 `isAccessibilityTool=false`. La divulgación y el consentimiento de la app no equivalen a aprobación de Google Play.
 Antes de publicar se necesitan declaración y revisión de la política de accesibilidad, canal de vulnerabilidades y validación en dispositivos reales.
+
+## Revisión local y diccionario (v0.2)
+
+Gemma recibe audio o el texto original y el vocabulario introducido voluntariamente por el usuario. No recibe mensajes de otras apps ni contexto leído del editor. Audio, transcripciones y revisión no salen del teléfono. El diccionario y la preferencia de revisión se guardan en SharedPreferences privadas; no se guarda voz personal para entrenamiento.
+
+La revisión está apagada por defecto y produce una propuesta separada. No se selecciona para copiar/insertar hasta que el usuario elige Usar propuesta. Se rechazan cambios de cifras o negaciones, salidas vacías/desproporcionadas y marcadores internos, pero estos controles no verifican el significado ni impiden todas las alucinaciones o instrucciones adversarias. El original permanece recuperable en memoria.
+
+Las correcciones de diccionario son explícitas y de palabra/frase completa, sin cascadas. Alias con destinos contradictorios no se aplican. El vocabulario se trata como datos; no se ejecutan herramientas ni instrucciones extraídas del dictado. Ningún modo pulsa Enviar.
+
+Gemma usa una conversación efímera por fragmento/revisión, sin historial entre sesiones. Un único modelo Gemma permanece cargado para reducir latencia, y se libera Whisper antes de cargarlo. Cancelación durante carga/inferencia puede demorar en liberar recursos; los resultados tardíos quedan invalidados.

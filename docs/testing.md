@@ -90,3 +90,24 @@ Registrar cada escenario como PASS/FAIL/PENDIENTE, modelo/revisión, Android/Hyp
 Medir por variante frío/caliente: tiempo Detener→resultado, duración de audio, RTF=segundos inferencia/segundos audio, RAM (`dumpsys meminfo dev.edgeflow`), térmicas y batería antes/después. La latencia de UI incluye carga del modelo; no hay instrumentación separada de carga en v0.
 
 Para WER/CER, guarda una referencia transcrita por una persona y la salida en UTF-8 y ejecuta `python3 scripts/error-rate.py referencia.txt salida.txt`. Normaliza a minúsculas, NFC y sin puntuación; conserva tildes. No subas audio ni mensajes privados al repositorio.
+
+## Iteración v0.2: Gemma y diccionario
+
+Las pruebas JVM añaden límites y correcciones exactas del diccionario, ambigüedad de alias, no cascadas, fronteras Unicode, solapamiento, WAV y guardas de revisión (cifras/negaciones/extensión). `WhisperEngine` recibe vocabulario como initial_prompt acotado; Gemma recibe vocabulario canónico, no instrucciones del diccionario.
+
+En un dispositivo autorizado con modelo verificado y el fixture sintético `files/smoke-es.wav`:
+
+```bash
+./gradlew :app:assembleDebug :app:assembleDebugAndroidTest
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+adb install -r -t app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+adb shell am instrument -w -e class dev.edgeflow.GemmaDeviceTest -e gemma true -e model gemma-e4b dev.edgeflow.test/androidx.test.runner.AndroidJUnitRunner
+```
+
+No se habilita accesibilidad, se cambia modo avión ni se graba micrófono en esta prueba. El paquete de test puede requerir confirmación de instalación en Xiaomi; no desactivar ajustes de seguridad para eludirla. Solo se registran textos sintéticos definidos en el test y el backend/latencia. `-e configure true` selecciona ese modelo y activa revisión en las preferencias de EdgeFlow al completar la prueba; usar únicamente si se desea dejar preparada la app para comparar.
+
+Para dictados largos, comparar muestras de 5, 25, 35, 60 y 180 s, verificando especialmente uniones de fragmentos. Una pasada corta no valida las largas. El encoder de audio va en CPU aunque el decoder sea GPU. No confundir GPU solicitada/inicializada con que cada operación corra en GPU.
+
+Validar revisión con texto técnico que incluya cifras, negaciones, siglas y un fragmento incoherente. Comprobar que el original permanezca, las guardas rechacen cifras/negaciones cambiadas, cancelar revisión conserve ASR y la propuesta requiera selección explícita para copiar/insertar.
+
+El diccionario se prueba sin entrenamiento con entradas propias y correcciones explícitas, por ejemplo `posgres => PostgreSQL`. Un cambio en una parte de palabra como `posgresita` no debe aplicarse. Si un alias tiene dos destinos distintos, se ignora esa regla; no se adivina cuál usar.

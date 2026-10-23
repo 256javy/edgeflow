@@ -1,0 +1,16 @@
+{
+  "device": {"name": "Xiaomi 12 Pro", "model": "2201122G", "soc": "SM8450", "android": "15", "sdk": 35, "hyperos_property": "OS3.0", "page_size": 4096},
+  "runtime": "LiteRT-LM Android 0.13.1",
+  "model": "Gemma 4 E4B",
+  "sha256": "0b2a8980ce155fd97673d8e820b4d29d9c7d99b8fa6806f425d969b145bd52e0",
+  "decoder_gpu_initialized": true,
+  "audio_backend": "CPU",
+  "microphone_captured": false,
+  "human_quality_accepted": false,
+  "airplane_mode_tested": false,
+  "short_audio": {"kind": "synthetic espeak-ng", "samples": 83308, "sample_rate": 16000, "cold_ms": 31443, "warm_ms": 5588, "wer": 0.125, "output": "Hola. Esta es una prueba médica local. Vamos a revisar el texto antes de enviar."},
+  "technical_audio": {"kind": "synthetic espeak-ng", "samples": 115783, "sample_rate": 16000, "warm_ms": 6395, "terms": ["PoC", "PR", "GitHub", "Android"], "output": "Vamos a desarrollar una PoC funcional para Android. Después vamos a revisar el PR en GitHub. No ejecutar el deploy.", "known_omission": "hoy"},
+  "long_audio": {"kind": "synthetic repetition of short fixture 7 times", "samples": 583156, "sample_rate": 16000, "segments": 2, "ms": 24719, "complete_repetitions": 7},
+  "review": {"ms": 5775, "original": "vamos a revisar el PR de GitHub y actualizar PostgreSQL 17 no ejecutar el deploy hoy", "proposal": "Vamos a revisar el PR de GitHub y actualizar PostgreSQL 17; no ejecutar el deploy hoy."},
+  "session_test": {"explicit_selection": "pass", "cancel_retains_original": "pass"}
+}

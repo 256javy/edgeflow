@@ -21,7 +21,7 @@ extern "C" JNIEXPORT void JNICALL
 Java_dev_edgeflow_NativeWhisper_prepare(JNIEnv *, jobject) { cancelled.store(false); }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_dev_edgeflow_NativeWhisper_transcribe(JNIEnv *env, jobject, jstring path, jfloatArray input, jstring lang) {
+Java_dev_edgeflow_NativeWhisper_transcribe(JNIEnv *env, jobject, jstring path, jfloatArray input, jstring lang, jstring hint) {
     std::lock_guard<std::mutex> lock(engine_mutex);
     const char *p = env->GetStringUTFChars(path, nullptr);
     std::string model(p);
@@ -29,6 +29,9 @@ Java_dev_edgeflow_NativeWhisper_transcribe(JNIEnv *env, jobject, jstring path, j
     const char *l = env->GetStringUTFChars(lang, nullptr);
     std::string language(l);
     env->ReleaseStringUTFChars(lang, l);
+    const char *h = env->GetStringUTFChars(hint, nullptr);
+    std::string vocabulary(h);
+    env->ReleaseStringUTFChars(hint, h);
     whisper_log_set(quiet, nullptr);
     auto fail = [&](const char *message) -> jstring {
         env->ThrowNew(env->FindClass("java/lang/IllegalStateException"), message);
@@ -52,6 +55,7 @@ Java_dev_edgeflow_NativeWhisper_transcribe(JNIEnv *env, jobject, jstring path, j
     params.translate = false;
     params.language = language == "auto" ? "auto" : language.c_str();
     params.no_context = true;
+    params.initial_prompt = vocabulary.empty() ? nullptr : vocabulary.c_str();
     params.no_timestamps = true;
     params.print_realtime = false;
     params.print_progress = false;

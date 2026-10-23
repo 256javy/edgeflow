@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Generate labelled synthetic Spanish speech locally with system libespeak-ng + ffmpeg."""
+import argparse
 import ctypes
 import subprocess
 import tempfile
@@ -19,11 +20,15 @@ def receive(samples, count, events):
 lib.espeak_SetSynthCallback(receive)
 if lib.espeak_SetVoiceByName(b'es') != 0:
     raise SystemExit('Spanish espeak-ng voice unavailable')
-text = 'Hola. Esta es una prueba de dictado local. Vamos a revisar el texto antes de enviar.'
+parser = argparse.ArgumentParser()
+parser.add_argument('--text', default='Hola. Esta es una prueba de dictado local. Vamos a revisar el texto antes de enviar.')
+parser.add_argument('--output', type=Path, default=Path(__file__).resolve().parent.parent / 'benchmarks' / 'smoke-es.wav')
+args = parser.parse_args()
+text = args.text
 raw = text.encode('utf-8') + b'\x00'
 lib.espeak_Synth(raw, len(raw), 0, 0, 0, 1, None, None)
 lib.espeak_Synchronize()
-output = Path(__file__).resolve().parent.parent / 'benchmarks' / 'smoke-es.wav'
+output = args.output
 with tempfile.TemporaryDirectory() as temporary:
     source = str(Path(temporary) / 'source.wav')
     with wave.open(source, 'wb') as wav:

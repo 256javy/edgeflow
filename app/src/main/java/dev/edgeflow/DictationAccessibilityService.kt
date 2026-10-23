@@ -128,7 +128,7 @@ class DictationAccessibilityService : AccessibilityService() {
     }
     fun hasTarget() = sessionActive
     fun returnWith(text: String): Boolean {
-        if (!sessionActive || invalidated || rootInActiveWindow?.packageName?.toString() != packageName || SystemClock.elapsedRealtime() - sessionStarted > 180000) { status = "Destino no válido; copia el resultado"; cancelTarget(); return false }
+        if (!sessionActive || invalidated || rootInActiveWindow?.packageName?.toString() != packageName || SystemClock.elapsedRealtime() - sessionStarted > (DictationText.MAX_SECONDS + 180) * 1000L) { status = "Destino no válido; copia el resultado"; cancelTarget(); return false }
         pendingText = text; pendingAt = SystemClock.elapsedRealtime()
         val stamp = pendingAt
         // Focus after finishing the visible activity is validated in the next accessibility event.
